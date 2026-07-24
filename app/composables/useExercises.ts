@@ -1,14 +1,25 @@
 import type { Exercise } from "~/types/exercise";
 
-interface ExercisesResponse {
+export interface ExercisesResponse {
   count: number;
   next: string | null;
   previous: string | null;
   results: Exercise[];
 }
+interface CategoriesResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: {id: number; name: string}[];
+  }
+
 export function useExercises() {
-  return useFetch<ExercisesResponse>("https://wger.de/api/v2/exerciseinfo/?limit=100");
+  return useFetch<ExercisesResponse>("https://wger.de/api/v2/exerciseinfo/?limit=200");
 }
 export function useExercise(uuid: string) {
   return useFetch<Exercise>(`https://wger.de/api/v2/exerciseinfo/${uuid}/`);
+}
+
+export function useCategories() {
+  return useFetch<CategoriesResponse>("https://wger.de/api/v2/exercisecategory/");
 }

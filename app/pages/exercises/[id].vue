@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
 const router = useRouter()
-const { data: exercise } = useExercise(route.params.id as string)
+const { data } = await useExercise(route.params.id as string)
+
+const exercise = computed(() => data.value)
 
 function goHome() {
   router.push('/')
