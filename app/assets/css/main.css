@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-gray-800 antialiased;
+  }
+  h1 {
+    @apply text-3xl font-bold text-brand;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2
+           font-semibold transition-colors duration-150 cursor-pointer;
+  }
+  .btn-primary {
+    @apply btn bg-primary text-white hover:brightness-110;
+  }
+  .btn-brand {
+    @apply btn bg-brand text-white hover:bg-brand-dark;
+  }
+  .btn-accent {
+    @apply btn bg-accent text-black hover:brightness-95;
+  }
+  .link {
+    @apply text-primary font-medium underline-offset-2
+           hover:underline hover:text-brand transition-colors;
+  }
+}

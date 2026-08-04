@@ -8,7 +8,7 @@ const props = defineProps<{
 <template>
     <div>
         <p>{{ exercise.uuid }}</p>
-        <p v-for="item in exercise.equipment" :key="item.id">{{ item.name }}</p>
-        <NuxtLink :to="`/exercises/${exercise.id}`" >{{ exercise.translations[0]?.name }}</NuxtLink>
+        <p v-for="item in exercise.equipment" :key="item.id" class="text-gray-500">Equipment: {{ item.name }}</p>
+        <NuxtLink :to="`/exercises/${exercise.id}`" class="link">{{ exercise.translations[0]?.name }}</NuxtLink>
     </div>
 </template>

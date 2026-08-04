@@ -14,7 +14,7 @@ interface CategoriesResponse {
   }
 
 export function useExercises() {
-  return useFetch<ExercisesResponse>("https://wger.de/api/v2/exerciseinfo/?limit=200");
+  return useFetch<ExercisesResponse>("https://wger.de/api/v2/exerciseinfo/?limit=200",); // {immediate: false} if don't want to run on page load
 }
 export function useExercise(id: string) {
   return useFetch<Exercise>(`https://wger.de/api/v2/exerciseinfo/${id}/`);
