@@ -11,6 +11,5 @@ const props = defineProps<{
             {{ exercise.translations[0]?.name }}
         </NuxtLink>
         <p v-for="item in exercise.equipment" :key="item.id" class="text-sm text-gray-500">Equipment: {{ item.name }}</p>
-        <p class="mt-auto truncate pt-2 font-mono text-xs text-gray-300">{{ exercise.uuid }}</p>
     </div>
 </template>

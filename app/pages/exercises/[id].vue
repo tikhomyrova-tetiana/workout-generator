@@ -18,7 +18,7 @@ function goHome() {
         <img
             v-if="exercise?.images[0]?.image"
             :src="exercise?.images[0]?.image"
-            alt="Exercise Image"
+            :alt="`${exercise?.translations[0]?.name} exercise image`"
             class="w-72 rounded-xl border border-gray-200 shadow-sm"
         >
         <div>
