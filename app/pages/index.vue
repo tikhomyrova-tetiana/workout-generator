@@ -19,27 +19,35 @@ workout.value = filterExercises(exercises?.value?.results ?? [], { categories: s
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold">Exercises</h1>
-    <div>
-        <p>Choose the exercises you want to see by category:
-            <label v-for="category in categories?.results" :key="category?.id">
-            <input type="checkbox" :value="category?.id" v-model="selectedCategories" />
-            <span class="text-black">{{ category?.name }}</span>
-        </label>
-        </p>
+  <div class="space-y-8">
+    <div class="space-y-2 text-center">
+      <h1 class="text-3xl font-bold text-brand">Exercises</h1>
+      <p class="text-gray-500">Pick a few categories and generate your workout.</p>
     </div>
-    <button @click="generate" class="btn-primary" :disabled="isLoading">Generate workout</button>
-    <button @click="reset" class="btn-primary">Reset</button>
-    
-    <p v-if="error">Something went wrong</p>
-    <p v-else-if="status === 'pending'">Loading...</p>
-    <p v-else-if="workout === null">No exercises yet — hit Generate.</p>
-    <p v-else-if="status === 'success' && workout?.length === 0">No exercises match those filters</p>
-    <ExerciseCard v-for="exercise in workout ?? []" :key="exercise.uuid" :exercise="exercise" />
-    <!-- <template v-if="workout.length > 0"> - <template> wrapper — groups elements but renders no extra DOM node
-    <ExerciseCard v-for="exercise in workout" :key="exercise.uuid" :exercise="exercise" />
-    </template> -->
-    
+
+    <div class="card space-y-5">
+      <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">
+        Choose the exercises you want to see by category
+      </p>
+      <div class="flex flex-wrap gap-2">
+        <label v-for="category in categories?.results" :key="category?.id" class="chip">
+          <input type="checkbox" :value="category?.id" v-model="selectedCategories" class="peer chip-input" />
+          <span class="chip-label">{{ category?.name }}</span>
+        </label>
+      </div>
+
+      <div class="flex flex-wrap gap-3 pt-1">
+        <button @click="generate" class="btn-primary" :disabled="isLoading">Generate workout</button>
+        <button @click="reset" class="btn-accent">Reset</button>
+      </div>
+    </div>
+
+    <p v-if="error" class="state-error">Something went wrong</p>
+    <p v-else-if="status === 'pending'" class="state-muted">Loading...</p>
+    <p v-else-if="workout === null" class="state-muted">No exercises yet — hit Generate.</p>
+    <p v-else-if="status === 'success' && workout?.length === 0" class="state-muted">No exercises match those filters</p>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <ExerciseCard v-for="exercise in workout ?? []" :key="exercise.uuid" :exercise="exercise" />
+    </div>
   </div>
 </template>

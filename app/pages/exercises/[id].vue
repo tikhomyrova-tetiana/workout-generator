@@ -11,11 +11,18 @@ function goHome() {
 </script>
 
 <template>
-    <div>
-        <h1 class="text-2xl font-bold">Exercise {{ exercise?.translations[0]?.name }}</h1>
-        <p class="text-lg text-green-300">{{ exercise?.category?.name }}</p>
-        <p>{{ exercise?.equipment[0]?.name }}</p>
-        <img v-if="exercise?.images[0]?.image" :src="exercise?.images[0]?.image" alt="Exercise Image" style="width:300px">
-        <button @click="goHome" class="btn-primary">Go Home</button>
+    <div class="card space-y-4">
+        <h1 class="text-3xl font-bold text-brand">{{ exercise?.translations[0]?.name }}</h1>
+        <span class="badge">{{ exercise?.category?.name }}</span>
+        <p class="text-gray-600">{{ exercise?.equipment[0]?.name }}</p>
+        <img
+            v-if="exercise?.images[0]?.image"
+            :src="exercise?.images[0]?.image"
+            alt="Exercise Image"
+            class="w-72 rounded-xl border border-gray-200 shadow-sm"
+        >
+        <div>
+            <button @click="goHome" class="btn-primary">Go Home</button>
+        </div>
     </div>
 </template>

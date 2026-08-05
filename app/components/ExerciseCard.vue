@@ -6,9 +6,11 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-    <div>
-        <p>{{ exercise.uuid }}</p>
-        <p v-for="item in exercise.equipment" :key="item.id" class="text-gray-500">Equipment: {{ item.name }}</p>
-        <NuxtLink :to="`/exercises/${exercise.id}`" class="link">{{ exercise.translations[0]?.name }}</NuxtLink>
+    <div class="card flex h-full flex-col gap-2">
+        <NuxtLink :to="`/exercises/${exercise.id}`" class="text-lg font-semibold text-brand hover:text-brand-dark transition-colors">
+            {{ exercise.translations[0]?.name }}
+        </NuxtLink>
+        <p v-for="item in exercise.equipment" :key="item.id" class="text-sm text-gray-500">Equipment: {{ item.name }}</p>
+        <p class="mt-auto truncate pt-2 font-mono text-xs text-gray-300">{{ exercise.uuid }}</p>
     </div>
 </template>
