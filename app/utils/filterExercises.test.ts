@@ -1,36 +1,76 @@
 import { describe, it, expect } from "vitest";
 import { filterExercises } from "./filterExercises";
+import type { Exercise } from "~/types/exercise";
 
-describe('filterExercises', () => {
-  it('should filter out exercises without images', () => {
-    const exercises = [
-      { id: 1, images: [], uuid: '1', equipment: [], translations: [], category: { id: 1, name: 'Category 1' }, muscles: [], muscles_secondary: [] },
-      { id: 2, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '2', equipment: [], translations: [], category: { id: 2, name: 'Category 2' }, muscles: [], muscles_secondary: [] },
-    ]
-    const filteredExercises = filterExercises(exercises, { categories: [] })
-    expect(filteredExercises).toEqual([{ id: 2, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '2', equipment: [], translations: [], category: { id: 2, name: 'Category 2' }, muscles: [], muscles_secondary: [] }])
+function createExercise(overrides: Partial<Exercise> = {}): Exercise {
+  return {
+    id: 1,
+    images: [{ id: 1, image: "pic.png" }],
+    uuid: "1",
+    equipment: [],
+    translations: [],
+    category: { id: 1, name: "Category 1" },
+    muscles: [],
+    muscles_secondary: [],
+    ...overrides,
+  };
+}
+
+describe("filterExercises", () => {
+  (it("should filter out exercises without images", () => {
+    const exerciseImage = createExercise({
+      images: [{ image: "https://example.com/image.jpg", id: 1 }],
+    });
+    const exerciseNoImage = createExercise({ images: [] });
+
+    const filteredExercises = filterExercises(
+      [exerciseImage, exerciseNoImage],
+      { categories: [] },
+    );
+    expect(filteredExercises).toEqual([exerciseImage]);
   }),
+    it("should filter out exercises by category", () => {
+      const exerciseLegs = createExercise({
+        category: { id: 1, name: "Legs" },
+      });
+      const exerciseArms = createExercise({
+        category: { id: 2, name: "Arms" },
+      });
 
-  it('should filter out exercises by category', () => {
-    const exercises = [
-      { id: 1, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '1', equipment: [], translations: [], category: { id: 1, name: 'Category 1' }, muscles: [], muscles_secondary: [] },
-      { id: 2, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '2', equipment: [], translations: [], category: { id: 2, name: 'Category 2' }, muscles: [], muscles_secondary: [] },
-    ]
-    const filteredExercises = filterExercises(exercises, { categories: [1] })
-    expect(filteredExercises).toEqual([{ id: 1, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '1', equipment: [], translations: [], category: { id: 1, name: 'Category 1' }, muscles: [], muscles_secondary: [] }])
-  })
+      const filteredExercises = filterExercises([exerciseLegs, exerciseArms], {
+        categories: [1],
+      });
+      expect(filteredExercises).toEqual([exerciseLegs]);
+    }));
 
-  it('should keep all exercises with images if no categories are selected', () => {
-    const exercises = [
-        { id: 1, images: [], uuid: '1', equipment: [], translations: [], category: { id: 1, name: 'Category 1' }, muscles: [], muscles_secondary: [] },
-        { id: 2, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '2', equipment: [], translations: [], category: { id: 2, name: 'Category 2' }, muscles: [], muscles_secondary: [] },
-      ]
-      const filteredExercises = filterExercises(exercises, { categories: [] })
-      expect(filteredExercises).toEqual([{ id: 2, images: [{ image: 'https://example.com/image.jpg', id: 1 }], uuid: '2', equipment: [], translations: [], category: { id: 2, name: 'Category 2' }, muscles: [], muscles_secondary: [] }])
-  })
+  it("should keep all exercises with images if no categories are selected", () => {
+    const exercise1 = createExercise({
+      id: 1,
+      category: { id: 1, name: "Arms" },
+    });
+    const exercise2 = createExercise({
+      id: 2,
+      category: { id: 2, name: "Legs" },
+    });
+    const filteredExercises = filterExercises([exercise1, exercise2], {
+      categories: [],
+    });
+    expect(filteredExercises).toEqual([exercise1, exercise2]);
+  });
 
-  it('should return empty array if no exercises are provided', () => {
-    const filteredExercises = filterExercises([], { categories: [] })
-    expect(filteredExercises).toEqual([])
-  })
-})
+  it("should filter out exercises matching the category but with no images", () => {
+    const exerciseNoImage = createExercise({
+      images: [],
+      category: { id: 2, name: "Legs" },
+    });
+    const filteredExercises = filterExercises([exerciseNoImage], {
+      categories: [2],
+    });
+    expect(filteredExercises).toEqual([]);
+  });
+
+  it("should return empty array if no exercises are provided", () => {
+    const filteredExercises = filterExercises([], { categories: [1] });
+    expect(filteredExercises).toEqual([]);
+  });
+});
